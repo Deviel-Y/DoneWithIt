@@ -1,6 +1,6 @@
-import MyAccountScreen from "@/screens/MyAccountScreen";
+import ListingScreen from "@/screens/ListingScreen";
 
 const index = () => {
-  return <MyAccountScreen />;
+  return <ListingScreen />;
 };
 export default index;
