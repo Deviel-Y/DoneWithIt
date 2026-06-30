@@ -1,5 +1,5 @@
 import AppText from "@/Components/AppText";
-import ListingIssuer from "@/Components/ListingIssuer";
+import ListItem from "@/Components/ListItem";
 import colors from "@/config/colors";
 import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
@@ -22,7 +22,7 @@ const LisitngDetailScreen = ({ image, subTitle, title }: Props) => {
       </View>
 
       <View style={styles.listingDetail}>
-        <ListingIssuer
+        <ListItem
           imageSource={require("@/assets/mosh.jpg")}
           name="Daniel yadghar"
           subTitle="5 listings"

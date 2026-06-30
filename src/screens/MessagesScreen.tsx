@@ -1,4 +1,4 @@
-import ListingIssuer from "@/Components/ListingIssuer";
+import ListItem from "@/Components/ListItem";
 import ListSeperator from "@/Components/ListSeperator";
 import Screen from "@/Components/Screen";
 import { useState } from "react";
@@ -47,7 +47,7 @@ const MessagesScreen = () => {
         data={items}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <ListingIssuer
+          <ListItem
             swipeOptions={{
               onDelete: () => handleDelete(item.id),
             }}

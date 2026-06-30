@@ -21,7 +21,7 @@ interface Props {
   };
 }
 
-const ListingIssuer = ({
+const ListItem = ({
   cardInfo: { subTitle, title, ImageComponent, containerStyle },
   swipeOptions: { isEnabled = true, onDelete },
 }: Props) => {
@@ -56,7 +56,7 @@ const ListingIssuer = ({
     </ReanimatedSwipeable>
   );
 };
-export default ListingIssuer;
+export default ListItem;
 
 const styles = StyleSheet.create({
   container: { flexDirection: "row", gap: 10 },
