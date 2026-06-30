@@ -1,7 +1,10 @@
 import ListingIssuer from "@/Components/ListingIssuer";
-import { FlatList, ImageSourcePropType } from "react-native";
+import ListSeperator from "@/Components/ListSeperator";
+import Screen from "@/Components/Screen";
+import { useState } from "react";
+import { FlatList, ImageSourcePropType, StyleSheet } from "react-native";
 
-const items: {
+const initialItems: {
   id: number;
   title: string;
   description: string;
@@ -28,18 +31,41 @@ const items: {
 ];
 
 const MessagesScreen = () => {
+  const [items, setItems] = useState(initialItems);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const handleDelete = (itemId: number) => {
+    setItems((prev) => prev.filter((message) => message.id !== itemId));
+  };
+
   return (
-    <FlatList
-      data={items}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <ListingIssuer
-          imageSource={item.image}
-          name={item.title}
-          subTitle={item.description}
-        />
-      )}
-    />
+    <Screen>
+      <FlatList
+        refreshing={isRefreshing}
+        onRefresh={() => setItems(initialItems)}
+        ItemSeparatorComponent={<ListSeperator />}
+        data={items}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ListingIssuer
+            swipeOptions={{
+              onDelete: () => handleDelete(item.id),
+            }}
+            cardInfo={{
+              title: item.title,
+              subTitle: item.description,
+              containerStyle: styles.list,
+            }}
+          />
+        )}
+      />
+    </Screen>
   );
 };
 export default MessagesScreen;
+
+const styles = StyleSheet.create({
+  list: {
+    padding: 10,
+  },
+});
