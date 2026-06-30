@@ -1,40 +1,67 @@
 import colors from "@/config/colors";
-import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+import { JSX } from "react";
+import { StyleSheet, View, ViewStyle } from "react-native";
+import ReanimatedSwipeable, {
+  SwipeableMethods,
+} from "react-native-gesture-handler/ReanimatedSwipeable";
+import { SharedValue } from "react-native-reanimated";
 import AppText from "./AppText";
+import DeleteSwipeAction from "./DeleteSwipeAction";
 
 interface Props {
-  imageSource: ImageSourcePropType;
-  name: string;
-  subTitle: string;
+  swipeOptions: {
+    isEnabled?: boolean;
+    onDelete?: () => void;
+  };
+  cardInfo: {
+    ImageComponent?: JSX.Element;
+    containerStyle?: ViewStyle;
+    title: string;
+    subTitle?: string;
+  };
 }
 
-const ListingIssuer = ({ imageSource, name, subTitle }: Props) => {
-  return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={imageSource} />
+const ListingIssuer = ({
+  cardInfo: { subTitle, title, ImageComponent, containerStyle },
+  swipeOptions: { isEnabled = true, onDelete },
+}: Props) => {
+  const renderRightAction = (
+    progress: SharedValue<number>,
+    _translation: SharedValue<number>,
+    swipeableMethods: SwipeableMethods,
+  ) => (
+    <DeleteSwipeAction
+      progress={progress}
+      onDelete={() => {
+        swipeableMethods.close();
+        onDelete?.();
+      }}
+    />
+  );
 
-      <View style={styles.textContainer}>
-        <AppText style={styles.title}>{name}</AppText>
-        <AppText style={styles.subTitle}>{subTitle}</AppText>
+  return (
+    <ReanimatedSwipeable
+      enabled={isEnabled}
+      overshootRight={false}
+      renderRightActions={renderRightAction}
+    >
+      <View style={[styles.container, containerStyle]}>
+        {ImageComponent}
+
+        <View style={styles.textContainer}>
+          <AppText style={styles.title}>{title}</AppText>
+          {subTitle && <AppText style={styles.subTitle}>{subTitle}</AppText>}
+        </View>
       </View>
-    </View>
+    </ReanimatedSwipeable>
   );
 };
 export default ListingIssuer;
 
 const styles = StyleSheet.create({
   container: { flexDirection: "row", gap: 10 },
-
-  image: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-  },
-
   textContainer: { justifyContent: "center" },
-
   title: { fontWeight: 500, fontSize: 17 },
-
   subTitle: {
     color: colors.mediumGray,
   },
