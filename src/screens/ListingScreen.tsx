@@ -13,7 +13,7 @@ const ListingScreen = () => {
         renderItem={({ item }) => (
           <Card
             imageSource={item.imageSource}
-            subTitle={item.subTitle}
+            subTitle={item.subTitle + "$"}
             title={item.title}
           />
         )}

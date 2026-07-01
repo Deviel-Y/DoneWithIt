@@ -3,18 +3,28 @@ import MaterialIcons from "@react-native-vector-icons/material-icons";
 import { useState } from "react";
 import {
   Button,
+  FlatList,
   Modal,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import PickerItem from "./PickerItem";
 
 interface Props {
-  placeholder: string;
+  datas: PickeItemType[];
+  placeholder?: string;
+  selectedItem: PickeItemType;
+  setSelectedItem: (item: PickeItemType) => void;
 }
 
-const AppPicker = ({ placeholder }: Props) => {
+const AppPicker = ({
+  placeholder,
+  selectedItem,
+  setSelectedItem,
+  datas,
+}: Props) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   return (
@@ -26,7 +36,14 @@ const AppPicker = ({ placeholder }: Props) => {
         <View style={styles.container}>
           <MaterialIcons name="apps" size={23} color={colors.darkGray} />
 
-          <Text style={styles.placeholder}>{placeholder}</Text>
+          <Text
+            style={[
+              styles.placeholder,
+              { color: selectedItem.name ? colors.black : undefined },
+            ]}
+          >
+            {selectedItem.name || placeholder}
+          </Text>
 
           <MaterialIcons
             style={styles.chevron}
@@ -42,6 +59,20 @@ const AppPicker = ({ placeholder }: Props) => {
           title="Close"
           color="blue"
           onPress={() => setIsModalVisible(false)}
+        />
+
+        <FlatList
+          data={datas}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <PickerItem
+              label={item.name}
+              onPress={() => {
+                setSelectedItem(item);
+                setIsModalVisible(false);
+              }}
+            />
+          )}
         />
       </Modal>
     </>
@@ -62,7 +93,7 @@ const styles = StyleSheet.create({
 
   placeholder: {
     color: colors.darkGray,
-    fontSize: 16,
+    fontSize: 17,
     flex: 1,
   },
 
@@ -70,3 +101,5 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "-90deg" }],
   },
 });
+
+type PickeItemType = { id: number; name: string; value: number };

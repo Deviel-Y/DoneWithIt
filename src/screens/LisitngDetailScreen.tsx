@@ -23,9 +23,12 @@ const LisitngDetailScreen = ({ image, subTitle, title }: Props) => {
 
       <View style={styles.listingDetail}>
         <ListItem
-          imageSource={require("@/assets/mosh.jpg")}
-          name="Daniel yadghar"
-          subTitle="5 listings"
+          swipeOptions={{ isEnabled: false }}
+          cardInfo={{
+            title: "Daniel Yadghar",
+            subTitle: "5 Listings",
+            ImageComponent: require("@/assets/mosh.jpg"),
+          }}
         />
       </View>
     </View>
